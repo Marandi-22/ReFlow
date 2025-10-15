@@ -327,9 +327,6 @@ export const usePlantStore = create<PlantStore>((set, get) => ({
       },
     }));
     get().addEvent('control', `DO control mode: ${mode.toUpperCase()}`);
-    if (mode === 'auto') {
-      pidController.reset();
-    }
   },
 
   setBlowerSpeed: (speed: number) => {

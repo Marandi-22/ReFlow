@@ -24,7 +24,6 @@ export default function ControlPanel() {
               value={DO.setpoint.toFixed(1)}
               onChange={(e) => setDOSetpoint(parseFloat(e.target.value))}
               className="w-full bg-industrial-bg border border-industrial-border px-3 py-2 mono text-lg"
-              disabled={DO.mode === 'auto'}
             />
           </div>
 
