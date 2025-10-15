@@ -94,7 +94,7 @@ export default function WelcomePage() {
           transition={{ delay: 0.6 }}
           className="mt-12 text-xs text-[var(--text-secondary)]"
         >
-          Version 1.0.0 • Built with Claude Code
+          Version 1.0.0 • 2025 All RIghts Reserved
         </motion.div>
       </motion.div>
     </div>
