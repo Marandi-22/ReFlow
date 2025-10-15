@@ -1,0 +1,401 @@
+CRITICAL: The current implementation is a raw simulator dump. I need a COMPLETE REDESIGN to make it feel like professional industrial software (like Wonderware/Ignition SCADA) meets modern SaaS UX (like Datadog/Grafana).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 CORE PROBLEM TO SOLVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Make ReFlow feel like:
+1. A $100K industrial software product (not a hackathon demo)
+2. An interactive learning experience (judges can play scenarios)
+3. A guided tour that tells our story (demo-friendly)
+4. Professional software an operator would actually use
+
+REFERENCES - Study these UI patterns:
+- Wonderware/AVEVA (industrial SCADA)
+- Ignition by Inductive Automation
+- Grafana dashboards
+- Datadog monitoring
+- Tableau analytics
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 NEW APP STRUCTURE - COMPLETE INFORMATION ARCHITECTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MULTI-PAGE FLOW (Not single page dump!):
+
+1. /welcome 
+   - Landing/splash screen
+   - Animated ReFlow logo
+   - "Launch Simulator" button
+   - Version info + Quick stats (e.g., "Simulated 2.4M liters treated")
+
+2. /onboarding (First-time experience)
+   - 4-step interactive tutorial:
+     Step 1: "Meet Your Plant" (shows process flow, explains stages)
+     Step 2: "Monitor & Control" (highlights sensors, shows how to adjust)
+     Step 3: "AI Optimization" (demonstrates AI recommendations)
+     Step 4: "Handle Emergencies" (trigger alarm, show how to respond)
+   - Skip button (but encouraged)
+   - Progress dots
+
+3. /dashboard (Main hub - NOT the simulator)
+   - Top: Plant status card (running/stopped, uptime %, current efficiency)
+   - 4 KPI cards: 
+     * Water Reuse Rate: 82% ↑
+     * Energy Efficiency: 1.8 kWh/m³ ↓
+     * BOD Removal: 94.2% →
+     * Active Alarms: 2 ⚠
+   - Quick actions:
+     * [Enter Control Room] ← Main simulator
+     * [View Reports]
+     * [Run Scenario]
+     * [Export Data]
+   - Recent events feed (last 10)
+   - Mini trend chart (24h overview)
+
+4. /control-room (The actual simulator - REDESIGNED)
+   - Left sidebar: Navigation
+     * Dashboard (go back)
+     * Control Room (current)
+     * Scenarios
+     * Reports
+     * Settings
+   - Top bar: 
+     * Plant name
+     * System status LED
+     * Time (real + simulated)
+     * Simulation speed control (1x, 5x, 10x)
+     * [Pause] [Resume] buttons
+     * User avatar (click → logout)
+   - Main area: Tabbed interface
+     * Tab 1: Overview (process flow + key sensors)
+     * Tab 2: Sensors (all 8 in detail grid)
+     * Tab 3: Control (PID tuning, equipment panel)
+     * Tab 4: Trends (historical charts)
+     * Tab 5: AI Insights (optimizer, predictions)
+   - Right panel (collapsible):
+     * Event log
+     * Active alarms
+     * AI suggestions
+   - Bottom: Status bar with connectivity, data rate, etc.
+
+5. /scenarios (Interactive challenges - THIS IS KEY!)
+   - List of scenarios:
+     ✅ Tutorial: Normal Operation (completed)
+     → Challenge 1: Handle Load Surge (locked until tutorial done)
+     → Challenge 2: Sensor Failure Recovery
+     → Challenge 3: Energy Optimization
+     → Challenge 4: Emergency Shutdown
+     → Challenge 5: Multi-fault Chaos (hard mode)
+   - Each scenario card shows:
+     * Difficulty (⭐⭐⭐)
+     * Objective (e.g., "Maintain BOD < 30mg/L during 50% load surge")
+     * Best score (if completed)
+     * [Start] button
+   - When scenario active:
+     * Timer (e.g., 5:00 countdown)
+     * Objective tracker (BOD: 28/30 ✓, Energy: 2.1/2.0 ✗)
+     * Score: 87/100
+     * [End Scenario] [Restart]
+   - After completion:
+     * Score breakdown
+     * Performance graph
+     * [Share Results] [Try Again] [Next Scenario]
+
+6. /reports
+   - Tabs:
+     * Daily Summary
+     * Weekly Performance
+     * Compliance Report (PCB format)
+     * Custom Range
+   - Each report shows:
+     * Key metrics table
+     * Trend charts
+     * Pass/fail indicators
+     * [Download PDF] [Download CSV] [Download JSON]
+   - Preview before download
+
+7. /settings
+   - Tabs:
+     * Plant Config (flow rate, stages enabled)
+     * Sensor Calibration (adjust ranges, noise levels)
+     * Control Parameters (PID tuning, setpoints)
+     * AI Settings (enable/disable, aggressiveness)
+     * Display (theme, units, refresh rate)
+   - [Save Changes] [Reset to Defaults]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎮 INTERACTIVE SCENARIO SYSTEM (GAME-LIKE)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPLEMENTATION:
+Create a scenario engine that:
+
+1. Tutorial Scenario (Auto-starts first time):
+   - Guided step-by-step with highlights
+   - "Click here" arrows pointing to controls
+   - Progress checklist:
+     [ ] Start simulation
+     [ ] Observe DO level for 30 seconds
+     [ ] Change DO setpoint to 5.0
+     [ ] Wait for stabilization
+     [ ] Accept AI recommendation
+     [ ] Acknowledge an alarm
+   - Success message: "Tutorial Complete! You're ready to operate ReFlow."
+
+2. Challenge 1: Load Surge
+   - Initial state: Normal operation (BOD 600, DO 4.5)
+   - Event at t=60s: Influent BOD jumps to 950 (factory discharge)
+   - Objective: Keep outlet BOD < 30mg/L for 10 minutes
+   - Hints:
+     * "Consider increasing DO setpoint"
+     * "AI recommends 5.2 mg/L"
+   - Scoring:
+     * BOD compliance: 40 pts
+     * Energy efficiency: 30 pts
+     * Response time: 20 pts
+     * AI acceptance: 10 pts
+
+3. Challenge 2: Sensor Failure
+   - Event: DO sensor fails (shows "--" after 2 min)
+   - Objective: Continue operation using other sensors + AI
+   - Player must: Switch to manual mode, estimate DO from ORP/pH
+   - Success: Maintain treatment quality without DO sensor
+
+4. Challenge 3: Energy Optimization
+   - Scenario: Normal day, but minimize kWh/m³
+   - Constraint: Must keep BOD < 20mg/L
+   - Player adjusts: DO setpoint, pump speeds, bypass valve
+   - Leaderboard: Best energy score
+
+5. Challenge 4: Emergency Shutdown
+   - Event: Pump trip + high TSS alarm
+   - Objective: Execute safe shutdown procedure
+   - Steps: Stop feed, maintain aeration, activate bypass
+   - Pass/fail: Binary (correct procedure or not)
+
+SCORING SYSTEM:
+- Real-time score display (0-100)
+- Breakdown: Performance (50%) + Efficiency (30%) + Speed (20%)
+- Star rating: ⭐ (60+), ⭐⭐ (80+), ⭐⭐⭐ (95+)
+- Save to localStorage
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 PROFESSIONAL UI/UX REDESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DESIGN SYSTEM:
+
+Colors (Industrial + Modern):
+- Background: #0a0e27 (deep navy, not pure black)
+- Surface: #1a1f3a (cards)
+- Surface elevated: #252b4a (hover)
+- Border: #2d3548
+- Text primary: #e8eaed
+- Text secondary: #9aa0b8
+- Accent blue: #3b82f6
+- Success: #10b981
+- Warning: #f59e0b
+- Danger: #ef4444
+- AI purple: #8b5cf6
+
+Typography:
+- Headings: Inter (semibold)
+- Body: Inter (regular)
+- Numbers: JetBrains Mono (monospace)
+- All fonts from next/font/google
+
+Spacing:
+- Use 8px grid system
+- Generous whitespace (not cramped)
+- Cards have 24px padding
+- Gaps between sections: 32px
+
+Components Style:
+- All cards: rounded-xl (12px radius)
+- Buttons: rounded-lg (8px)
+- Subtle shadows: shadow-xl with colored glow
+- Hover states: scale(1.02) + brightness increase
+- Active animations: smooth 200ms transitions
+
+Navigation (Left Sidebar):
+- Width: 240px
+- Collapsible to icons-only (56px)
+- Active item: blue left border + blue glow
+- Icons from lucide-react
+- Tooltips on hover (collapsed mode)
+
+Status Indicators:
+- LED style: circle with pulse animation
+- Green glow for running
+- Red glow + blink for alarms
+- Yellow glow for warnings
+- Gray for stopped
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎬 DEMO-FRIENDLY FEATURES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. GUIDED TOUR (Accessible from any page):
+   - Floating "?" button in bottom-right
+   - Click → starts interactive tour:
+     * Spotlight highlights
+     * Tooltip explanations
+     * "Next" / "Skip" buttons
+   - Tours for each page
+   - "Show me how AI works" tour
+
+2. DEMO MODE:
+   - Toggle in settings: "Demo Mode" (accelerates time 10x)
+   - Shows compressed 24hr cycle in 2.4 minutes
+   - Visual indicator: "🎬 DEMO MODE" badge
+
+3. PRESENTATION VIEW:
+   - Button: "Enter Presentation Mode"
+   - Hides all UI chrome except main content
+   - Larger fonts
+   - Keyboard shortcuts:
+     * Space: Pause/resume
+     * → : Jump to next event
+     * ← : Rewind 1 minute
+     * T: Trigger alarm
+     * R: Run AI optimization
+
+4. STORYLINE SCENARIOS:
+   - Pre-scripted sequences for demos:
+     "Morning Startup" → "Peak Load" → "AI Optimization" → "Alarm Response" → "Daily Report"
+   - Auto-progresses or manual control
+   - Narrator text boxes explaining what's happening
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 DATA EXPORT & REPORTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CSV Export:
+- Button in dashboard + control room
+- Downloads file: reflow_data_YYYY-MM-DD_HHmmss.csv
+- Columns: timestamp, stage, BOD, TSS, DO, pH, flow, energy, alarm_count
+- Last N hours of data (user selectable: 1h, 6h, 24h, all)
+
+PDF Report:
+- Professional layout (not just browser print)
+- Use @react-pdf/renderer or jsPDF
+- Includes:
+  * ReFlow logo + plant name
+  * Date range
+  * Executive summary (3 bullet points)
+  * KPI table
+  * 3 trend charts (embedded images)
+  * Compliance status (green checkmarks)
+  * Footer: "Generated by ReFlow v1.0"
+- Download as: reflow_report_YYYY-MM-DD.pdf
+
+JSON Export:
+- For API integration demo
+- Full state object
+- Includes metadata, sensor history, events
+- Formatted/prettified
+
+Live CSV Stream:
+- "Start Recording" button
+- Saves data to browser storage every 10s
+- "Stop & Download" → gets accumulated CSV
+- Use for extended demos
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔧 TECHNICAL REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Routing:
+- Use Next.js App Router properly
+- File structure:
+  app/
+    welcome/page.tsx
+    onboarding/page.tsx  
+    dashboard/page.tsx
+    control-room/page.tsx
+    scenarios/page.tsx
+    scenarios/[id]/page.tsx
+    reports/page.tsx
+    settings/page.tsx
+    layout.tsx (shared sidebar)
+
+State Management:
+- Keep Zustand store
+- Add: currentPage, activeScenario, tourStep, demoMode
+- Persist to localStorage: settings, completed scenarios, high scores
+
+Animations:
+- Use Framer Motion for page transitions
+- Variants: fadeIn, slideIn, scaleIn
+- Animated process flow particles (requestAnimationFrame)
+- Chart updates: smooth transitions (not jumpy)
+
+Performance:
+- Lazy load heavy components
+- Memo sensor cards (only rerender if value changed)
+- Virtualize event log (react-window) if >100 items
+- Debounce chart updates to 1fps max
+
+Libraries to Add:
+npm install framer-motion lucide-react react-window jspdf date-fns
+
+Icons:
+- Use lucide-react throughout
+- Consistent size (20px default, 24px for emphasis)
+- Always with aria-labels
+
+Accessibility:
+- Keyboard navigation works everywhere
+- Focus visible styles
+- Screen reader announcements for alarms
+- ARIA labels on all controls
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ ACCEPTANCE CRITERIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Before calling this done:
+
+[ ] Welcome screen loads with animation
+[ ] Onboarding tutorial is completable in <3 minutes
+[ ] Dashboard shows live updating KPIs
+[ ] Control room has working tabs
+[ ] At least 3 scenarios are playable start-to-finish
+[ ] Scenarios show scores and can be restarted
+[ ] CSV export downloads correct data
+[ ] PDF report generates and looks professional
+[ ] Settings persist across page refresh
+[ ] Navigation sidebar works on all pages
+[ ] Dark theme is consistent everywhere
+[ ] No console errors
+[ ] Loads in <2 seconds on localhost
+[ ] Works in Chrome, Firefox, Safari
+[ ] Responsive down to 1280px width minimum
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 PRIORITY ORDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Build in this sequence:
+
+
+1. New routing structure (/welcome, /dashboard, /control-room)
+2. Navigation sidebar + top bar
+3. Welcome + dashboard pages
+4. Redesign control-room with tabs
+
+
+5. Onboarding tutorial (4 steps)
+6. Scenario system (at least tutorial + challenge 1)
+7. Scoring system
+
+
+8. Reports page + CSV/PDF export
+9. Settings page
+10. Polish animations, fix bugs
+11. Guided tour feature
+
+DELETE CURRENT CODE AND START FRESH. Don't try to retrofit - clean slate.
+
+Create a professional, demo-worthy product that looks like it costs $100K and teaches judges how our system works through interactive play.

@@ -1,0 +1,358 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg-primary: #0a0e27;
+  --bg-surface: #1a1f3a;
+  --bg-elevated: #252b4a;
+  --border-color: #2d3548;
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0b8;
+  --accent-blue: #3b82f6;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --ai-purple: #8b5cf6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* LED Status Indicators with Pulse */
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(16, 185, 129, 0.4), 0 0 16px 4px rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 0 12px 4px rgba(16, 185, 129, 0.6), 0 0 24px 8px rgba(16, 185, 129, 0.3); }
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(239, 68, 68, 0.4), 0 0 16px 4px rgba(239, 68, 68, 0.2); }
+  50% { box-shadow: 0 0 12px 4px rgba(239, 68, 68, 0.6), 0 0 24px 8px rgba(239, 68, 68, 0.3); }
+}
+
+@keyframes pulse-yellow {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(245, 158, 11, 0.4), 0 0 16px 4px rgba(245, 158, 11, 0.2); }
+  50% { box-shadow: 0 0 12px 4px rgba(245, 158, 11, 0.6), 0 0 24px 8px rgba(245, 158, 11, 0.3); }
+}
+
+@keyframes pulse-blue {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(59, 130, 246, 0.4), 0 0 16px 4px rgba(59, 130, 246, 0.2); }
+  50% { box-shadow: 0 0 12px 4px rgba(59, 130, 246, 0.6), 0 0 24px 8px rgba(59, 130, 246, 0.3); }
+}
+
+.led-green {
+  animation: pulse-green 2s infinite;
+}
+
+.led-red {
+  animation: pulse-red 1s infinite;
+}
+
+.led-yellow {
+  animation: pulse-yellow 1.5s infinite;
+}
+
+.led-blue {
+  animation: pulse-blue 2s infinite;
+}
+
+/* Alarm Flash Animation */
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.alarm-flash {
+  animation: flash 0.8s infinite;
+}
+
+/* Flow Particle Animation */
+@keyframes flow-down {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+.flow-particle {
+  animation: flow-down 3s infinite;
+}
+
+/* Card Styles */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  background: var(--bg-elevated);
+  transform: scale(1.01);
+}
+
+.card-elevated {
+  background: var(--bg-elevated);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--accent-blue);
+  color: white;
+}
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-elevated);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}
+
+/* Tab Styles */
+.tab {
+  padding: 12px 24px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+
+.tab-active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+}
+
+/* Input Styles */
+input[type="number"],
+input[type="text"],
+select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease;
+}
+
+input[type="number"]:focus,
+input[type="text"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-primary);
+  outline: none;
+  border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent-blue);
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--accent-blue);
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-blue), var(--ai-purple));
+  transition: width 0.3s ease;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--warning);
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--danger);
+}
+
+.badge-info {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--accent-blue);
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+}
+
+.tooltip::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  margin-bottom: 8px;
+}
+
+.tooltip:hover::before {
+  opacity: 1;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  border: 3px solid var(--bg-elevated);
+  border-top-color: var(--accent-blue);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Slide In Animation */
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.4s ease;
+}
