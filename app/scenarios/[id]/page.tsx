@@ -6,7 +6,6 @@ import { useScenarioStore } from '@/lib/scenarioStore';
 import { usePlantStore } from '@/lib/store';
 import { getScenario } from '@/lib/scenarios';
 import { ArrowLeft, Play, Pause, X } from 'lucide-react';
-import ScenarioHUD from '@/components/ScenarioHUD';
 import TutorialOverlay from '@/components/TutorialOverlay';
 import ScenarioResults from '@/components/ScenarioResults';
 import { motion } from 'framer-motion';
@@ -166,14 +165,11 @@ export default function ScenarioExecutionPage({ params }: { params: { id: string
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Scenario HUD */}
-      <ScenarioHUD />
-
       {/* Tutorial Overlay */}
       {params.id === 'tutorial' && <TutorialOverlay />}
 
-      {/* Control Panel Area (below HUD) */}
-      <div className="pt-36 p-6">
+      {/* Control Panel Area */}
+      <div className="pt-6 p-6">
         {/* Top Controls */}
         <div className="flex items-center justify-between mb-6">
           <button
